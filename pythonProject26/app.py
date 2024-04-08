@@ -4,7 +4,7 @@ from sqlalchemy import join
 from models import *
 
 student_main_id=2121002
-treacher_main_id=0
+teacher_main_id=238901
 
 
 
@@ -15,11 +15,15 @@ def hello_world():
 def table():
     return render_template("tables.html",student_courses=get_student_courses(student_main_id))
 
-@app.route('/table_withdraw/<course_id>')
+@app.route('/table_withdraw/<course_id>')     #学生退课
 def table_withdraw(course_id):
     delete_student_course(student_main_id, course_id=course_id)
     return render_template("tables.html",student_courses=get_student_courses(student_main_id))
 
+@app.route('/CC/<course_id>')        #学生选课
+def CC(course_id):
+    add_student_course(student_main_id, course_id=course_id)
+    return render_template("tables.html",student_courses=get_student_courses(student_main_id))
 
 @app.route('/login')
 def login():
@@ -29,9 +33,16 @@ def login():
 def choose_course():
     return render_template("ChooseCourse.html",student_courses=get_student_unselected_courses(student_main_id))
 
+@app.route('/teacher_course')
+def teacher_course():
+    return render_template("teacher_Course.html",teacher_courses=get_teacher_allcourses(teacher_main_id))
+
 def login():
     return render_template("login.html")
 
+@app.route('/redirect_teacher_course')
+def redirect_teacher_course():
+    return redirect("/teacher_course")
 @app.route('/redirect_index')
 def redirect_index():
     return redirect('/')
@@ -66,6 +77,9 @@ def get_student_unselected_courses(student_id):# 查询该学生的所有未选�
 
     return unselected_courses
 
+def get_teacher_allcourses(teacher_id):
+    course=Course.query.filter_by(employee_id=teacher_id).all()
+    return course
 
 def delete_student_course(student_id, course_id):      #学生退课
     enrollment = Enrollment.query.filter_by(student_id=student_id, course_id=course_id).first()

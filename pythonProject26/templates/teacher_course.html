@@ -134,7 +134,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{url_for('redirect_table')}}">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
+                    <span>Teacher</span></a>
             </li>
 
             <!-- Divider -->
@@ -364,26 +364,19 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">学生选课界面</h1>
+                    <h1 class="h3 mb-2 text-gray-800">老师课程管理界面</h1>
 
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h6 mb-0 text-gray-800">在此处可以选择你未选的课</h1>
-                        <a href="{{ url_for('redirect_table') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> 返回</a>
+                        <h1 class="h6 mb-0 text-gray-800">在此处你可查看自己所教的课程</h1>
+                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> 成绩管理</a>
                     </div>
 
 
-<!--                    <p class="mb-4">在此处可以看到你选的课以及它们的成绩将会在此处展示-->
-<!--&lt;!&ndash;                        <a target="_blank" href="https://datatables.net">official DataTables documentation</a></p>&ndash;&gt;-->
-<!--                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i-->
-<!--                                class="fas fa-download fa-sm text-white-50"></i> 选课</a>-->
-                    <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
 
-                            <h6 class="m-0 font-weight-bold text-primary">未选课程</h6>
-
-
+                            <h6 class="m-0 font-weight-bold text-primary">课程管理</h6>
 
 
                         </div>
@@ -397,8 +390,6 @@
             <th>Time</th>
             <th>Hours</th>
             <th>Credit</th>
-
-            <th>Action</th>
         </tr>
     </thead>
     <tfoot>
@@ -408,12 +399,11 @@
             <th>Time</th>
             <th>Hours</th>
             <th>Credit</th>
-
-            <th>Action</th>
         </tr>
     </tfoot>
     <tbody>
-        {% for course in student_courses %}
+    {% if teacher_courses %}
+        {% for course in teacher_courses %}
             <tr>
                 <td>{{ course.course_id }}</td>
                 <td>{{ course.course_name }}</td>
@@ -421,15 +411,15 @@
                 <td>{{ course.course_hours }}</td>
                 <td>{{ course.course_credit }}</td>
 
-                <td>
-                    <a href="{{ url_for('CC', course_id=course.course_id) }}" class="btn btn-success btn-icon-split">
-                                        <span class="text">选课</span>
-                                    </a>
-                </td>
-
             </tr>
         {% endfor %}
-    </tbody>
+    {% else %}
+        <tr>
+            <td colspan="7">没有可用的课程信息。</td>
+        </tr>
+    {% endif %}
+</tbody>
+
 </table>
 
                             </div>
