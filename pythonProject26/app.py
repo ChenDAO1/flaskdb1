@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import join
 from models import *
 
-student_main_id=0
+student_main_id=2121002
 treacher_main_id=0
 
 
@@ -13,7 +13,13 @@ def hello_world():
     return render_template("index.html")
 @app.route('/table')
 def table():
-    return render_template("tables.html",student_courses=get_student_courses(2121004))
+    return render_template("tables.html",student_courses=get_student_courses(student_main_id))
+
+@app.route('/table_withdraw/<course_id>')
+def table_withdraw(course_id):
+    delete_student_course(student_main_id, course_id=course_id)
+    return render_template("tables.html",student_courses=get_student_courses(student_main_id))
+
 
 @app.route('/login')
 def login():
@@ -21,7 +27,7 @@ def login():
 
 @app.route('/ChooseCourse')
 def choose_course():
-    return render_template("ChooseCourse.html",student_courses=get_student_unselected_courses(2121004))
+    return render_template("ChooseCourse.html",student_courses=get_student_unselected_courses(student_main_id))
 
 def login():
     return render_template("login.html")

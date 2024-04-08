@@ -413,6 +413,7 @@
         </tr>
     </tfoot>
     <tbody>
+    {% if student_courses %}
         {% for course in student_courses %}
             <tr>
                 <td>{{ course.course_id }}</td>
@@ -421,11 +422,18 @@
                 <td>{{ course.course_hours }}</td>
                 <td>{{ course.course_credit }}</td>
                 <td>{{ course.grade }}</td>
-                <td><button onclick="withdrawCourse('{{ course.course_id }}')">退课</button></td> <!-- 每一行的最后一个单元格中加入按钮 -->
-
+                <td><a href="{{ url_for('table_withdraw', course_id=course.course_id) }}" class="btn btn-danger btn-icon-split">
+                    <span class="text">退课</span>
+                </a></td>
             </tr>
         {% endfor %}
-    </tbody>
+    {% else %}
+        <tr>
+            <td colspan="7">没有可用的课程信息。</td>
+        </tr>
+    {% endif %}
+</tbody>
+
 </table>
 
                             </div>
