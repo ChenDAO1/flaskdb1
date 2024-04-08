@@ -5,6 +5,7 @@ from models import *
 
 student_main_id=2121002
 teacher_main_id=238901
+admin_main_id=0
 
 
 
@@ -45,19 +46,22 @@ def process_login():
    if role=='student':
        student = Student.query.filter_by(student_id=account).first()
        if student.student_passwd==password:
-           pass#进入了
+          student_main_id=account
+          print(get_student_courses(student_main_id))
+          return redirect('/table')
        else:
-           return redirect('/login')
+           return redirect_table()
    if role == 'teacher':
        teacher = Teacher.query.filter_by(teacher_id=account).first()
        if teacher.teacher_passwd == password:
-           pass  # 进入了
+          teacher_main_id=account
+          return redirect("/teacher_course")
        else:
            return redirect('/login')
    if role == 'admin':
        admin = UserModel.query.filter_by(id=account).first()
        if admin._password == password:
-           pass  # 进入了
+           admin_main_id=account
        else:
            return redirect('/login')
 
