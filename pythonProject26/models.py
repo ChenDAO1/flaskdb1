@@ -5,7 +5,7 @@ import json
 
 app=Flask(__name__)
 class Config:
-    SQLALCHEMY_DATABASE_URI='mysql://root:cs626824@127.0.0.1:3306/flaskdb1'
+    SQLALCHEMY_DATABASE_URI='mysql://root:root@127.0.0.1:3306/flaskdb1'
     SQLALCHEMY_TRACK_MODIFICATIONS= True
 app.config.from_object(Config)
 

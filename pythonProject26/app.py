@@ -37,6 +37,36 @@ def choose_course():
 def teacher_course():
     return render_template("teacher_Course.html",teacher_courses=get_teacher_allcourses(teacher_main_id))
 
+@app.route('/process_login', methods=['POST'])
+def process_login():
+   account = request.form['account']
+   password = request.form['password']
+   role = request.form['role']
+   if role=='student':
+       student = Student.query.filter_by(student_id=account).first()
+       if student.student_passwd==password:
+           pass#进入了
+       else:
+           return redirect('/login')
+   if role == 'teacher':
+       teacher = Teacher.query.filter_by(teacher_id=account).first()
+       if teacher.teacher_passwd == password:
+           pass  # 进入了
+       else:
+           return redirect('/login')
+   if role == 'admin':
+       admin = UserModel.query.filter_by(id=account).first()
+       if admin._password == password:
+           pass  # 进入了
+       else:
+           return redirect('/login')
+
+
+
+# 在这里处理表单数据
+   return 'Form submitted'
+
+
 def login():
     return render_template("login.html")
 
