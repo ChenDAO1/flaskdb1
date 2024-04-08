@@ -368,7 +368,7 @@
 
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h6 mb-0 text-gray-800">在此处你可查看自己所教的课程</h1>
-                        <a href="{{ url_for('redirect_teacher_grade') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        <a href="{{url_for('redirect_teacher_course')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> 成绩管理</a>
                     </div>
 
@@ -376,7 +376,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
 
-                            <h6 class="m-0 font-weight-bold text-primary">课程管理</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">成绩管理</h6>
 
 
                         </div>
@@ -385,42 +385,32 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
     <thead>
         <tr>
-            <th>Course ID</th>
+            <th>Student ID</th>
+            <th>Student Name</th>
             <th>Course Name</th>
-            <th>Time</th>
-            <th>Hours</th>
-            <th>Credit</th>
+            <th>Grade</th>
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <th>Course ID</th>
-            <th>Course Name</th>
-            <th>Time</th>
-            <th>Hours</th>
-            <th>Credit</th>
-        </tr>
-    </tfoot>
     <tbody>
-    {% if teacher_courses %}
-        {% for course in teacher_courses %}
-            <tr>
-                <td>{{ course.course_id }}</td>
-                <td>{{ course.course_name }}</td>
-                <td>{{ course.course_time }}</td>
-                <td>{{ course.course_hours }}</td>
-                <td>{{ course.course_credit }}</td>
-
-            </tr>
+    {% if students %}
+        {% for course_id, students_data in students.items() %}
+            {% for student_data in students_data %}
+                <tr>
+                    <td>{{ student_data.student_id }}</td>
+                    <td>{{ student_data.student_name }}</td>
+                    <td>{{ student_data.course_name }}</td>
+                    <td>{{ student_data.grade }}</td>
+                </tr>
+            {% endfor %}
         {% endfor %}
     {% else %}
         <tr>
-            <td colspan="7">没有可用的课程信息。</td>
+            <td colspan="4">No data available.</td>
         </tr>
     {% endif %}
-</tbody>
-
+    </tbody>
 </table>
+
 
                             </div>
                         </div>

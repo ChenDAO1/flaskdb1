@@ -4,7 +4,7 @@ from sqlalchemy import join
 from models import *
 
 student_main_id=2121002
-teacher_main_id=238901
+teacher_main_id=254633
 admin_main_id=0
 
 
@@ -37,6 +37,13 @@ def choose_course():
 @app.route('/teacher_course')
 def teacher_course():
     return render_template("teacher_Course.html",teacher_courses=get_teacher_allcourses(teacher_main_id))
+
+
+@app.route('/teacher_grade')
+def teacher_grade():
+    students = get_teacher_students_scores(teacher_main_id)
+    print(students)
+    return render_template("teacher_grade.html", students=students)
 
 @app.route('/process_login', methods=['POST'])
 def process_login():
@@ -77,6 +84,10 @@ def login():
 @app.route('/redirect_teacher_course')
 def redirect_teacher_course():
     return redirect("/teacher_course")
+
+@app.route('/redirect_teacher_grade')
+def redirect_teacher_grade():
+    return redirect("/teacher_grade")
 @app.route('/redirect_index')
 def redirect_index():
     return redirect('/')
@@ -249,12 +260,13 @@ def get_teacher_students_scores(teacher_id):          #返回该老师所教的�
             student_id = student.student_id
             student_name = student.student_name
             grade = enrollment.grade
+            course_name=course.course_name
 
             course_id = course.course_id
             if course_id in students_scores:
-                students_scores[course_id].append({'student_id': student_id, 'student_name': student_name, 'grade': grade})
+                students_scores[course_id].append({'student_id': student_id, 'course_name':course_name,'student_name': student_name, 'grade': grade})
             else:
-                students_scores[course_id] = [{'student_id': student_id, 'student_name': student_name, 'grade': grade}]
+                students_scores[course_id] = [{'student_id': student_id, 'course_name':course_name,'student_name': student_name, 'grade': grade}]
 
         return students_scores
     else:
