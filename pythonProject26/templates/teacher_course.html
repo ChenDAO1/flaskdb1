@@ -364,10 +364,10 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">老师课程管理界面</h1>
+                    <h1 class="h3 mb-2 text-gray-800">老师成绩管理界面</h1>
 
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h6 mb-0 text-gray-800">在此处你可查看自己所教的课程</h1>
+                        <h1 class="h6 mb-0 text-gray-800">在此处你可查看所有你教课程的学生的成绩</h1>
                         <a href="{{ url_for('redirect_teacher_grade') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> 成绩管理</a>
                     </div>
@@ -376,7 +376,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
 
-                            <h6 class="m-0 font-weight-bold text-primary">课程管理</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">成绩管理</h6>
 
 
                         </div>
@@ -399,6 +399,7 @@
             <th>Time</th>
             <th>Hours</th>
             <th>Credit</th>
+
         </tr>
     </tfoot>
     <tbody>
@@ -410,6 +411,7 @@
                 <td>{{ course.course_time }}</td>
                 <td>{{ course.course_hours }}</td>
                 <td>{{ course.course_credit }}</td>
+
 
             </tr>
         {% endfor %}

@@ -26,6 +26,14 @@ def CC(course_id):
     add_student_course(student_main_id, course_id=course_id)
     return render_template("tables.html",student_courses=get_student_courses(student_main_id))
 
+@app.route('/ChangeGrade/<student_id>/<course_id>')    #更改学生成绩
+def ChangeGrade(student_id, course_id):
+    change_student_grade(student_id, course_id)
+    students = get_teacher_students_scores(teacher_main_id)
+    print(students)
+    return render_template("teacher_grade.html", students=students)
+
+
 @app.route('/login')
 def login():
     return render_template("login.html")
@@ -113,8 +121,31 @@ def withdraw_course():
     # 在这里执行相应的退课操作，比如从数据库中删除该课程记录等
     return jsonify({'message': 'Course withdrawn successfully'})
 
+@app.route('/submit', methods=['POST'])
+def submit():
+    student_id = request.form['student_id']
+    course_id = request.form['course_id']
+    grade = request.form['newgrade']
+    print(student_id,course_id,grade)
+    change_student_grade(student_id, course_id, grade)
+    return redirect_teacher_grade()
+
+
 
 #-----------------
+
+
+def change_student_grade(student_id,course_id,newgrade):
+    enrollment = Enrollment.query.filter_by(student_id=student_id, course_id=course_id).first()
+    #print(enrollment)
+    if enrollment:
+        enrollment.grade = newgrade
+        db.session.commit()
+    return redirect('/teacher_grade')
+
+
+
+
 def get_student_unselected_courses(student_id):# 查询该学生的所有未选课名单
     selected_courses = [enrollment.course_id for enrollment in Enrollment.query.filter_by(student_id=student_id).all()]
     all_courses = Course.query.all()
@@ -193,30 +224,25 @@ def get_student_courses(student_id):       # 查询学生选课信息
 
 
 def get_teacher_students_scores(teacher_id):         # 查询老师教授的课程
-
     teacher_courses = Teach.query.filter_by(teacher_id=teacher_id).all()
-
     if teacher_courses:
         students_scores = {}
         for teach in teacher_courses:
             # 获取课程ID
             course_id = teach.course_id
-
             # 查询该课程下的学生及其分数
             enrollments = Enrollment.query.filter_by(course_id=course_id).all()
-
             for enrollment in enrollments:
                 student_id = enrollment.student_id
                 grade = enrollment.grade
-
                 # 获取学生姓名
                 student_name = Student.query.filter_by(student_id=student_id).first().student_name
 
                 # 存储学生分数
                 if course_id in students_scores:
-                    students_scores[course_id].append({'student_id': student_id, 'student_name': student_name, 'grade': grade})
+                    students_scores[course_id].append({'student_id': student_id, 'course_id':course_id,'student_name': student_name, 'grade': grade})
                 else:
-                    students_scores[course_id] = [{'student_id': student_id, 'student_name': student_name, 'grade': grade}]
+                    students_scores[course_id] = [{'student_id': student_id, 'course_id':course_id,'student_name': student_name, 'grade': grade}]
 
         return students_scores
     else:

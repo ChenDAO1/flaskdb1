@@ -387,8 +387,10 @@
         <tr>
             <th>Student ID</th>
             <th>Student Name</th>
+            <th>Course ID</th>
             <th>Course Name</th>
             <th>Grade</th>
+            <th>Changegrade</th>
         </tr>
     </thead>
     <tbody>
@@ -398,8 +400,19 @@
                 <tr>
                     <td>{{ student_data.student_id }}</td>
                     <td>{{ student_data.student_name }}</td>
+                    <td>{{ course_id }}</td>
                     <td>{{ student_data.course_name }}</td>
                     <td>{{ student_data.grade }}</td>
+
+                    <td>
+                        <form action="{{url_for('submit')}}" method="post">
+    <input type="hidden" id="student_id" name="student_id" value="{{ student_data.student_id }}">
+    <input type="hidden" id="course_id" name="course_id" value="{{ course_id  }}">
+    <label for="newgrade">newgrade：</label>
+    <input  id="newgrade" name="newgrade">
+    <input type="submit" value="提交">
+</form>
+                </td>
                 </tr>
             {% endfor %}
         {% endfor %}
